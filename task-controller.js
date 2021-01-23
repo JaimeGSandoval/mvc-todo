@@ -1,4 +1,8 @@
-// TaskController.js - This class sits between the view and the model and acts as the glue that binds them together. It allows for easy decoupling of your model and view. Whenever the view uses the EventDispatcher, the controller will be there to listen and then update the model. Besides that, all the method declarations inside this file should look relatively similar to the View and Model.
+// TaskController.js - This class sits between the view and the model and acts as the glue that binds them together. It allows for easy decoupling of your model and view.
+
+// Whenever the view uses the EventDispatcher, the controller will be there to listen and then update the model.
+
+// Besides that, all the method declarations inside this file should look relatively similar to the View and Model.
 
 var TaskController = function (model, view) {
   this.model = model;
@@ -10,16 +14,7 @@ var TaskController = function (model, view) {
 TaskController.prototype = {
 
   init: function () {
-    this.createChildren()
-      .setupHandlers()
-      .enable();
-  },
-
-  createChildren: function () {
-    // no need to create children inside the controller
-    // this is a job for the view
-    // you could all as well leave this function out
-    return this;
+    this.setupHandlers().enable();
   },
 
   setupHandlers: function () {
@@ -44,6 +39,7 @@ TaskController.prototype = {
   },
 
 
+  // points to MODEL to add data
   addTask: function (sender, args) {
     this.model.addTask(args.task);
   },

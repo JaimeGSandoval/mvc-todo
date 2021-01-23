@@ -1,7 +1,14 @@
-// TaskView.js - This is the largest file in this project and could have been abstracted into multiple views. But for simplicity’s sake, I put everything into one class. The constructor function sets up five Event objects. This allows the view to call the notify() method on each Event object, thus passing the responsibility onto the controller. Next, you see that the constructor calls the init() method. This init method uses method chaining to set up the backbone of this class.
+// TaskView.js - This is the largest file in this project and could have been abstracted into multiple views. But for simplicity’s sake, I put everything into one class.
+
+// The constructor function sets up five Event objects. This allows the view to call the notify() method on each Event object, thus passing the responsibility onto the controller.
+
+// Next, you see that the constructor calls the init() method. This init method uses method chaining to set up the backbone of this class.
 
 var TaskView = function (model) {
+  console.log(model);
   this.model = model;
+
+  // Attached to the MODEL. When the MODEL changes it calls this.addTaskEvent.notify() to let the VIEW know that something has changed and to display the change with new html.
   this.addTaskEvent = new Event(this);
   this.selectTaskEvent = new Event(this);
   this.unselectTaskEvent = new Event(this);
@@ -19,7 +26,11 @@ TaskView.prototype = {
       .enable();
   },
 
-  // createChildren() - Caches the $('.js-container') DOM element in a this.$container variable, then refers to that variable for each element thereafter it needs to find(). This is merely a performance thing, and allows jQuery to pull any elements from the variable instead of re-querying/crawling the DOM. Notice the use of return this. This allows for the method chaining inside the previous init() call.
+  // createChildren() - Caches the $('.js-container') DOM element in a this.$container variable, then refers to that variable for each element thereafter it needs to find().
+
+  // This is merely a performance thing, and allows jQuery to pull any elements from the variable instead of re-querying/crawling the DOM.
+
+  // Notice the use of return this. This allows for the method chaining inside the previous init() call.
 
   createChildren: function () {
     // cache the document object
@@ -27,11 +38,12 @@ TaskView.prototype = {
     this.$addTaskButton = this.$container.find('.js-add-task-button');
     this.$taskTextBox = this.$container.find('.js-task-textbox');
     this.$tasksContainer = this.$container.find('.js-tasks-container');
-
     return this;
   },
 
-  // setupHandlers() - This part can be a little tricky to wrap your head around for the first time. This method is setting up the event handlers and changing the scope of the this keyword inside that handler. Basically, whenever you run into a JavaScript event handler and plan to use the ever so famous this keyword inside that callback function, then this is going to reference the actual object or element the event took place on. This is not desirable in many cases, as in the MVC case when you want this to reference the actual class itself. Here, you are calling the bind(this) method on a JavaScript callback function. This changes the this keyword scope to point to that of the class instead of the object or element that initialized that event.
+  // setupHandlers() - This part can be a little tricky to wrap your head around for the first time. This method is setting up the event handlers and changing the scope of the this keyword inside that handler.
+
+  // Basically, whenever you run into a JavaScript event handler and plan to use the ever so famous this keyword inside that callback function, then this is going to reference the actual object or element the event took place on. This is not desirable in many cases, as in the MVC case when you want this to reference the actual class itself. Here, you are calling the bind(this) method on a JavaScript callback function. This changes the this keyword scope to point to that of the class instead of the object or element that initialized that event.
 
   setupHandlers: function () {
 
@@ -43,11 +55,11 @@ TaskView.prototype = {
     /**
     Handlers from Event Dispatcher
     */
+    // this.addTask is a method on the model prototype. this.addTask.bind(this) is being set as the value for this.addTaskHandler, but it's context will point to the model prototype
     this.addTaskHandler = this.addTask.bind(this);
     this.clearTaskTextBoxHandler = this.clearTaskTextBox.bind(this);
     this.setTasksAsCompletedHandler = this.setTasksAsCompleted.bind(this);
     this.deleteTasksHandler = this.deleteTasks.bind(this);
-
     return this;
   },
 
@@ -70,25 +82,33 @@ TaskView.prototype = {
     /**
      * Event Dispatcher
      */
+    // addTaskEvent is an Event object that has access to the attach method on the Event prototype
+    console.log(this.model.addTaskEvent);
+    console.log(this.addTaskEvent);
+    console.log(this.addTaskHandler);
     this.model.addTaskEvent.attach(this.addTaskHandler);
     this.model.addTaskEvent.attach(this.clearTaskTextBoxHandler);
     this.model.setTasksAsCompletedEvent.attach(this.setTasksAsCompletedHandler);
     this.model.deleteTasksEvent.attach(this.deleteTasksHandler);
-
     return this;
   },
 
+  // addTaskButton will add the event object that's set to addTaskEvent
   addTaskButton: function () {
+    // this.addTaskEvent is an Event object so it has has to the notify() method
+    console.log('Add', this.addTaskEvent);
     this.addTaskEvent.notify({
       task: this.$taskTextBox.val()
     });
   },
 
   completeTaskButton: function () {
+    console.log('complete', this.completeTaskEvent);
     this.completeTaskEvent.notify();
   },
 
   deleteTaskButton: function () {
+    console.log('delete', this.deleteTaskEvent);
     this.deleteTaskEvent.notify();
   },
 

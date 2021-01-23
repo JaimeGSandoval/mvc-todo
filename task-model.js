@@ -1,4 +1,8 @@
-// TaskModel.js - This class has some basic methods for adding and deleting actual task objects from the tasks array. Setting up three Event objects inside the constructor function, allows the model to call the notify() method on each event object after a task has been added, marked as complete, or deleted. This, in turn, passes on the responsibility to the view to re-render the HTML to show the updated list of tasks. The main thing to recognize is that the Model passes off responsibility to the View. Model -> View.
+// TaskModel.js - This class has some basic methods for adding and deleting actual task objects from the tasks array.
+
+// Setting up three Event objects inside the constructor function, allows the model to call the notify() method on each event object after a task has been added, marked as complete, or deleted. This, in turn, passes on the responsibility to the view to re-render the HTML to show the updated list of tasks.
+
+// The main thing to recognize is that the Model passes off responsibility to the View. Model -> View.
 
 var TaskModel = function () {
   this.tasks = [];
@@ -12,11 +16,14 @@ var TaskModel = function () {
 
 TaskModel.prototype = {
 
+  // receives data from the CONTROLLER to add as a new task
   addTask: function (task) {
     this.tasks.push({
       taskName: task,
       taskStatus: 'uncompleted'
     });
+
+    // addTaskEvent is an EVENT object with notify as a method. Connected to the VIEW and notifies the VIEW of a change so it can make the html
     this.addTaskEvent.notify();
   },
 
