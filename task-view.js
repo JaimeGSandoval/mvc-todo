@@ -5,7 +5,6 @@
 // Next, you see that the constructor calls the init() method. This init method uses method chaining to set up the backbone of this class.
 
 var TaskView = function (model) {
-  console.log(model);
   this.model = model;
 
   // Attached to the MODEL. When the MODEL changes it calls this.addTaskEvent.notify() to let the VIEW know that something has changed and to display the change with new html.
@@ -48,14 +47,20 @@ TaskView.prototype = {
   setupHandlers: function () {
 
     this.addTaskButtonHandler = this.addTaskButton.bind(this);
-    this.selectOrUnselectTaskHandler = this.selectOrUnselectTask.bind(this);
+    this.selectOrUnselectTaskHandler = this.selectOrUnselectTaskButton.bind(this);
     this.completeTaskButtonHandler = this.completeTaskButton.bind(this);
     this.deleteTaskButtonHandler = this.deleteTaskButton.bind(this);
 
     /**
     Handlers from Event Dispatcher
     */
-    // this.addTask is a method on the model prototype. this.addTask.bind(this) is being set as the value for this.addTaskHandler, but it's context will point to the model prototype
+    // addTask
+    // clearTaskTextBox
+    // setTasksAsCompleted
+    // deleteTasks
+
+    //the methods being bound here are from this module and at the bottom of this file
+    // These handlers are added to the listeners array
     this.addTaskHandler = this.addTask.bind(this);
     this.clearTaskTextBoxHandler = this.clearTaskTextBox.bind(this);
     this.setTasksAsCompletedHandler = this.setTasksAsCompleted.bind(this);
@@ -83,46 +88,52 @@ TaskView.prototype = {
      * Event Dispatcher
      */
     // addTaskEvent is an Event object that has access to the attach method on the Event prototype
-    console.log(this.model.addTaskEvent);
-    console.log(this.addTaskEvent);
-    console.log(this.addTaskHandler);
+
+    // Adds functions to the _listeners array by calling attach method that's on the Events object
     this.model.addTaskEvent.attach(this.addTaskHandler);
     this.model.addTaskEvent.attach(this.clearTaskTextBoxHandler);
     this.model.setTasksAsCompletedEvent.attach(this.setTasksAsCompletedHandler);
     this.model.deleteTasksEvent.attach(this.deleteTasksHandler);
+    console.log(this);
     return this;
   },
+
+
+  //********************* START OF HELPER METHODS ON PROTOTYPE****************
 
   // addTaskButton will add the event object that's set to addTaskEvent
   addTaskButton: function () {
     // this.addTaskEvent is an Event object so it has has to the notify() method
-    console.log('Add', this.addTaskEvent);
+
+    // addTaskEvent in view constructor
     this.addTaskEvent.notify({
       task: this.$taskTextBox.val()
     });
   },
 
   completeTaskButton: function () {
-    console.log('complete', this.completeTaskEvent);
+    // completeTaskEvent in view constructor
     this.completeTaskEvent.notify();
   },
 
   deleteTaskButton: function () {
-    console.log('delete', this.deleteTaskEvent);
+    // deleteTaskEvent in view constructor
     this.deleteTaskEvent.notify();
   },
 
-  selectOrUnselectTask: function () {
+  selectOrUnselectTaskButton: function () {
 
     var taskIndex = $(event.target).attr("data-index");
 
     if ($(event.target).attr('data-task-selected') == 'false') {
       $(event.target).attr('data-task-selected', true);
+      // selectTaskEvent in view constructor
       this.selectTaskEvent.notify({
         taskIndex: taskIndex
       });
     } else {
       $(event.target).attr('data-task-selected', false);
+      // unselectTaskEvent in view constructor
       this.unselectTaskEvent.notify({
         taskIndex: taskIndex
       });
@@ -159,7 +170,7 @@ TaskView.prototype = {
 
 
 
-  /* -------------------- Handlers From Event Dispatcher ----------------- */
+  /* -------------------- Handlers From Event Dispatcher and changes the DOM ----------------- */
 
   clearTaskTextBox: function () {
     this.$taskTextBox.val('');

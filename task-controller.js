@@ -5,6 +5,8 @@
 // Besides that, all the method declarations inside this file should look relatively similar to the View and Model.
 
 var TaskController = function (model, view) {
+  console.log('model', model);
+  console.log('view', view);
   this.model = model;
   this.view = view;
 
