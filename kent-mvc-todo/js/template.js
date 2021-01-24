@@ -47,7 +47,7 @@
    * or Handlebars, however, this is a vanilla JS example.
    *
    * @param {object} data The object containing keys you want to find in the
-   *                      template to replace.
+   *                      template to replace. This "object" is an array with objects in it
    * @returns {string} HTML String of an <li> element
    *
    * @example
@@ -58,6 +58,7 @@
    * });
    */
   Template.prototype.show = function (data) {
+    // data parameter is a "typeof Object" but it's an array with objects in it
     var i, l;
     var view = '';
 
@@ -75,7 +76,6 @@
       template = template.replace('{{title}}', escape(data[i].title));
       template = template.replace('{{completed}}', completed);
       template = template.replace('{{checked}}', checked);
-
       view = view + template;
     }
 

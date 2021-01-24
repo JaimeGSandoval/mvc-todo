@@ -13,8 +13,7 @@
   function Store(name, callback) {
     callback = callback || function () { };
 
-    this._dbName = name;
-
+    this._dbName = name; // 'todos-vanillajs' is the database name
     if (!localStorage[name]) {
       var data = {
         todos: []
@@ -22,7 +21,7 @@
 
       localStorage[name] = JSON.stringify(data);
     }
-
+    console.log(localStorage[name]);
     callback.call(this, JSON.parse(localStorage[name]));
   }
 

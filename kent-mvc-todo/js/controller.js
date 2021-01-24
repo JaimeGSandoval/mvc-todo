@@ -13,35 +13,35 @@
     self.model = model;
     self.view = view;
 
-    self.view.bind('newTodo', function (title) {
+    self.view.myBind('newTodo', function (title) {
       self.addItem(title);
     });
 
-    self.view.bind('itemEdit', function (item) {
+    self.view.myBind('itemEdit', function (item) {
       self.editItem(item.id);
     });
 
-    self.view.bind('itemEditDone', function (item) {
+    self.view.myBind('itemEditDone', function (item) {
       self.editItemSave(item.id, item.title);
     });
 
-    self.view.bind('itemEditCancel', function (item) {
+    self.view.myBind('itemEditCancel', function (item) {
       self.editItemCancel(item.id);
     });
 
-    self.view.bind('itemRemove', function (item) {
+    self.view.myBind('itemRemove', function (item) {
       self.removeItem(item.id);
     });
 
-    self.view.bind('itemToggle', function (item) {
+    self.view.myBind('itemToggle', function (item) {
       self.toggleComplete(item.id, item.completed);
     });
 
-    self.view.bind('removeCompleted', function () {
+    self.view.myBind('removeCompleted', function () {
       self.removeCompletedItems();
     });
 
-    self.view.bind('toggleAll', function (status) {
+    self.view.myBind('toggleAll', function (status) {
       self.toggleAll(status.completed);
     });
   }
@@ -56,6 +56,7 @@
     var page = route || '';
     this._updateFilterState(page);
   };
+
 
   /**
    * An event to fire on load. Will get all items and display them in the

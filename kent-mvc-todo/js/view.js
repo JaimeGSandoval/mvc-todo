@@ -94,6 +94,7 @@
 
   View.prototype.render = function (viewCmd, parameter) {
     var self = this;
+    console.log(self)
     var viewCommands = {
       showEntries: function () {
         self.$todoList.innerHTML = self.template.show(parameter);
@@ -170,7 +171,7 @@
     });
   };
 
-  View.prototype.bind = function (event, handler) {
+  View.prototype.myBind = function (event, handler) {
     var self = this;
     if (event === 'newTodo') {
       $on(self.$newTodo, 'change', function () {
