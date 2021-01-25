@@ -65,6 +65,7 @@
   Controller.prototype.showAll = function () {
     var self = this;
     self.model.read(function (data) {
+      console.log(data)
       self.view.render('showEntries', data);
     });
   };
@@ -215,6 +216,7 @@
   Controller.prototype._updateCount = function () {
     var self = this;
     self.model.getCount(function (todos) {
+      console.log(todos)
       self.view.render('updateElementCount', todos.active);
       self.view.render('clearCompletedButton', {
         completed: todos.completed,
@@ -240,6 +242,7 @@
     // re-create the todo item elements, calling:
     //   this.show[All|Active|Completed]();
     if (force || this._lastActiveRoute !== 'All' || this._lastActiveRoute !== activeRoute) {
+      console.log(activeRoute);
       this['show' + activeRoute]();
     }
 

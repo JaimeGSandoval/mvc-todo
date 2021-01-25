@@ -41,6 +41,7 @@
   };
 
   View.prototype._setFilter = function (currentPage) {
+
     qs('.filters .selected').className = '';
     qs('.filters [href="#/' + currentPage + '"]').className = 'selected';
   };
@@ -94,7 +95,6 @@
 
   View.prototype.render = function (viewCmd, parameter) {
     var self = this;
-    console.log(self)
     var viewCommands = {
       showEntries: function () {
         self.$todoList.innerHTML = self.template.show(parameter);
